@@ -1,0 +1,31 @@
+name: Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main, 'feat/**']
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.10', '3.12', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e '.[dev,jobs]'
+      - run: python -m pytest
+      - run: python -m black --check src tests
+      - run: python -m build
+      - name: Check installed namespace
+        run: |
+          python -m venv /tmp/events-wheel
+          /tmp/events-wheel/bin/python -m pip install --no-deps dist/*.whl
+          cd /tmp
+          /tmp/events-wheel/bin/python -I -c 'from sourceant.events import Event, EventBus; from sourceant.events.http import SignedHTTP; bus = EventBus(); bus.listen("render.finished", lambda event: event.id); event = Event("render.finished"); assert bus.dispatch(event)[0].value == event.id'

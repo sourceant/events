@@ -1,0 +1,26 @@
+[project]
+name = "sourceant-events"
+version = "0.1.0"
+description = "Event primitives, listeners, and optional durable delivery"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = []
+
+[project.optional-dependencies]
+jobs = ["jobs @ git+https://github.com/sourceant/jobs.git@c10b28597d62fb4e4a7dc440df02918c371c76a1"]
+dev = ["pytest>=8", "black>=24", "build>=1"]
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["sourceant.events*"]
+namespaces = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.black]
+target-version = ["py310"]
