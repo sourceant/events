@@ -23,3 +23,9 @@ jobs:
       - run: python -m pytest
       - run: python -m black --check src tests
       - run: python -m build
+      - name: Check installed namespace
+        run: |
+          python -m venv /tmp/events-wheel
+          /tmp/events-wheel/bin/python -m pip install --no-deps dist/*.whl
+          cd /tmp
+          /tmp/events-wheel/bin/python -I -c 'from sourceant.events import Event, EventBus; from sourceant.events.http import SignedHTTP; bus = EventBus(); bus.listen("render.finished", lambda event: event.id); event = Event("render.finished"); assert bus.dispatch(event)[0].value == event.id'

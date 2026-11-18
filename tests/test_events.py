@@ -3,7 +3,7 @@ from datetime import datetime
 
 import pytest
 
-from sourceant_events import Event, EventBus
+from sourceant.events import Event, EventBus
 
 
 def test_events_are_independent_of_application_ownership_and_round_trip():

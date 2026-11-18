@@ -9,9 +9,9 @@ import pytest
 from jobs import BACKGROUND, Contributions, JobHandler, JobRequest, SQLJobStore, Worker
 from sqlalchemy import Column, Integer, MetaData, Table, create_engine, insert, select
 
-from sourceant_events import Event, EventBus
-from sourceant_events.http import SignedHTTP
-from sourceant_events.jobs import EventHandler, QueuedListener
+from sourceant.events import Event, EventBus
+from sourceant.events.http import SignedHTTP
+from sourceant.events.jobs import EventHandler, QueuedListener
 
 
 @pytest.fixture

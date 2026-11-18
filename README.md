@@ -2,6 +2,8 @@
 
 Events and listeners for Python applications, with optional queued delivery through [jobs](https://github.com/sourceant/jobs).
 
+Install as `sourceant-events` and import from `sourceant.events`. The shared `sourceant` namespace uses Python’s native namespace packaging; this distribution does not install a parent `sourceant/__init__.py`.
+
 The core has no runtime dependencies. It does not depend on an application, framework, database, or ownership model.
 
 ## Install
@@ -15,7 +17,7 @@ Use an immutable commit or release tag when pinning an application dependency. I
 ## Events and listeners
 
 ```python
-from sourceant_events import Event, EventBus
+from sourceant.events import Event, EventBus
 
 bus = EventBus()
 subscription = bus.listen("render.finished", lambda event: print(event.data["film"]))
@@ -46,8 +48,8 @@ Ordinary listeners still receive only the event. Context is not serialized or in
 
 ```python
 from jobs import BACKGROUND, Contributions, JobHandler, JobRequest, SQLJobStore, Worker
-from sourceant_events import Event, EventBus
-from sourceant_events.jobs import EventHandler, QueuedListener
+from sourceant.events import Event, EventBus
+from sourceant.events.jobs import EventHandler, QueuedListener
 
 store = SQLJobStore(engine, create_schema=True)
 publisher = EventBus()
@@ -79,7 +81,7 @@ A transaction cannot undo an HTTP request or another external side effect. Queue
 ## Signed HTTP
 
 ```python
-from sourceant_events.http import SignedHTTP
+from sourceant.events.http import SignedHTTP
 
 handler = EventHandler("events.deliver", SignedHTTP(destination, signing_secret))
 ```
