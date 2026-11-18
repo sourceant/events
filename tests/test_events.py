@@ -1,9 +1,14 @@
 import asyncio
-from datetime import datetime
+from datetime import datetime, tzinfo
 
 import pytest
 
 from sourceant.events import Event, EventBus
+
+
+class NoOffset(tzinfo):
+    def utcoffset(self, value):
+        return None
 
 
 def test_events_are_independent_of_application_ownership_and_round_trip():
@@ -23,6 +28,7 @@ def test_events_are_independent_of_application_ownership_and_round_trip():
         {"version": 2},
         {"version": True},
         {"occurred_at": datetime(2026, 1, 1)},
+        {"occurred_at": datetime(2026, 1, 1, tzinfo=NoOffset())},
         {"data": []},
         {"metadata": []},
     ],

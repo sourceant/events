@@ -26,6 +26,7 @@ class Event:
         if (
             not isinstance(self.occurred_at, datetime)
             or self.occurred_at.tzinfo is None
+            or self.occurred_at.utcoffset() is None
         ):
             raise ValueError("An event requires a timezone-aware occurrence time")
         if type(self.version) is not int or self.version != 1:
